@@ -17,14 +17,28 @@ import {
   del,
   requestBody,
 } from '@loopback/rest';
-import {Task, Response} from '../models';
+import {Task, Response, RemoteReq} from '../models';
 import {TaskRepository} from '../repositories';
+import {httpUtil} from "../utils"
 
 export class TaskController {
   constructor(
     @repository(TaskRepository)
     public taskRepository : TaskRepository,
   ) {}
+  
+  @get('/remote-request/{url}', {
+    responses: {
+      '200': {
+        description: 'response of remote request',
+        content: {'application/json': {schema: RemoteReq}},
+      },
+    },
+  })
+  async findGTask(@param.path.string('url') url: string): Promise<any> {
+    let res = await httpUtil.sendGetRemoteRequest(url);
+    return res;
+  }
 
   @post('/tasks', {
     responses: {
@@ -49,7 +63,7 @@ export class TaskController {
   async count(
     @param.query.object('where', getWhereSchemaFor(Task)) where?: Where<Task>,
   ): Promise<Response> {
-    return await this.taskRepository.query('select count(*) as count from Task1');
+    return await this.taskRepository.query('select count(*) as count from Task');
   }
 
   @get('/tasks', {
