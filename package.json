@@ -54,7 +54,7 @@
     "request": "^2.88.0"
   },
   "devDependencies": {
-    "@loopback/build": "^2.0.3",
+    "@loopback/build": "^9.0.6",
     "@loopback/testlab": "^1.6.3",
     "@types/node": "^10.14.10",
     "nodemon": "^1.19.1",
